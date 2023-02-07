@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/saveKeeper}" method="post" th:object="${keeper}">
+
+    Username:
+    <input type="text" name="username" th:field="*{username}">
+
+    Password:
+    <input type="password" name="password" th:field="*{password}">
+
+    Nombre:
+    <input type="text" name="name" th:field="*{name}">
+
+    Apellido:
+    <input type="text" name="lastname" th:field="*{lastname}">
+
+    Fecha de nacimiento:
+    <input type="date" name="birthdate" th:field="*{birthdate}">
+
+    Email:
+    <input type="email" name="email" th:field="*{email}">
+
+    Telefono:
+    <input type="tel" name="phone" th:field="*{phone}">
+
+    Ciudad:
+    <input type="text" name="city" th:field="*{city}">
+
+    <label>Remuneracion</label>
+    <input type="number" name="remuneration" th:field="*{remuneration}" required>
+
+    <label>Fecha de inicio</label>
+    <input type="date" name="starDate" th:field="*{startDate}">
+
+    <label>Fecha de finalizaccion</label>
+    <input type="date" name="finishDate" th:field="*{finishDate}">
+
+    <label>Horario de inicio</label>
+    <input type="time" name="startTime" th:field="*{startTime}">
+
+    <label>Horario de finalizacion</label>
+    <input type="time" name="endTime" th:field="*{endTime}">
+
+    <label>Tamaño a cuidar</label>
+    <select name="size" th:field="*{petSize}" required>
+        <option value=""disabled selected>Tamaño</option>
+        <option value="small">Pequeño</option>
+        <option value="medium">Mediano</option>
+        <option value="big">Grande</option>
+    </select>
+
+    <button type="submit">Siguiente</button>
+</form>
+</body>
+</html>
