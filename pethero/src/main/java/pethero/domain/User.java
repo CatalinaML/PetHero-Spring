@@ -4,9 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,7 +18,7 @@ public class User implements Serializable {
     private int idUser;
     //Unique
     private String username;
-    @NotEmpty
+    @NotNull
     private String password;
     @NotEmpty
     private String name;
@@ -77,15 +79,42 @@ public class User implements Serializable {
         this.city = city;
     }
 
+    public User(String username, String password, String name, String lastname, String birthdate, String email, String phone, String city) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.phone = phone;
+        this.city = city;
+    }
+
     public User() {
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 
     public void setEmail(String email) {
@@ -98,5 +127,20 @@ public class User implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthdate='" + birthdate + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 }
