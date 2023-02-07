@@ -12,9 +12,6 @@ import pethero.service.UserService;
 @Controller
 public class ControllerWeb {
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/login")
     public String login(){
         return "login";
@@ -22,14 +19,6 @@ public class ControllerWeb {
 
     @GetMapping("/newAccount")
     public String newAccount(Model model){
-        model.addAttribute("user", new User());
-        return "newAccount";
-    }
-
-    @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user){
-        System.out.println(user.toString());
-        userService.save(user);
-        return "index";
+        return "accountType";
     }
 }
