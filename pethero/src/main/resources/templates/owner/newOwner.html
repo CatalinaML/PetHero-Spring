@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/saveOwner}" method="post" th:object="${owner}">
+  Username:
+  <input type="text" name="username" th:field="*{username}">
+
+  Password:
+  <input type="password" name="password" th:field="*{password}">
+
+  Nombre:
+  <input type="text" name="name" th:field="*{name}">
+
+  Apellido:
+  <input type="text" name="lastname" th:field="*{lastname}">
+
+  Fecha de nacimiento:
+  <input type="date" name="birthdate" th:field="*{birthdate}">
+
+  Email:
+  <input type="email" name="email" th:field="*{email}">
+
+  Telefono:
+  <input type="tel" name="phone" th:field="*{phone}">
+
+  Ciudad:
+  <input type="text" name="city" th:field="*{city}">
+
+  <button type="submit">Siguiente</button>
+</form>
+</body>
+</html>
