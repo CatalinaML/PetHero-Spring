@@ -1,11 +1,14 @@
 package pethero.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pethero.domain.Keeper;
 import pethero.service.KeeperService;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ControllerKeeper {
@@ -20,6 +23,7 @@ public class ControllerKeeper {
     @PostMapping("/saveKeeper")
     public String saveKeeper(Keeper keeper){
         keeperService.save(keeper);
-        return "index";
+
+        return "keeper/indexKeeper";
     }
 }
