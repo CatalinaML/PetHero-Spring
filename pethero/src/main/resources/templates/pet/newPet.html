@@ -11,8 +11,8 @@
 
     <form th:action="@{/pet/savePet}" method="post" th:object="${pet}">
       <label>Tipo de mascota</label>
-      <input type="radio" name="type" value="Perro" th:field="*{type}">
-      <input type="radio" name="type" value="Gato" th:field="*{type}">
+      <input type="radio" name="type" value="Perro" th:text="Perro" th:field="*{type}">
+      <input type="radio" name="type" value="Gato" th:text="Gato" th:field="*{type}">
 
       <label>Nombre</label>
       <input type="text" name="name" th:field="*{name}">
@@ -21,7 +21,12 @@
       <input type="text" name="race" th:field="*{race}">
 
       <label>Tamaño</label>
-      <input type="text" name="petSize" th:field="*{petSize}">
+      <select name="size" th:field="*{petSize}" required>
+        <option value=""disabled selected>Tamaño</option>
+        <option value="pequeño">Pequeño</option>
+        <option value="mediano">Mediano</option>
+        <option value="grande">Grande</option>
+      </select>
 
       <label>Año de nacimiento</label>
       <input type="number" name="birthdate" th:field="*{birthdate}">
