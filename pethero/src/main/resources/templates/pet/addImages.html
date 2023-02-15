@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Archivos</title>
+    </head>
+    <body>
+      <form th:action="@{/image/} + ${id}" method="post" enctype="multipart/form-data">
+
+        <label>Imagen</label>
+        <input type="file" accept="image/*" name="image" th:name="image">
+
+        <label>Plan de vacunacion</label>
+        <input type="file" accept="image/*" name="plan" th:name="plan">
+
+        <button type="submit">Guardar</button>
+      </form>
+    </body>
+</html>

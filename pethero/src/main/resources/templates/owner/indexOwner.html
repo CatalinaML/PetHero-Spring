@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-
+<a th:href="@{/owner/logOut}">Cerrar sesión</a>
+<a th:href="@{/pet/newPet}">Agregar mascota</a>
+<a th:href="@{/pet/list}">Listado de mascotas</a>
+<a th:href="@{/owner/viewKeepers}">Buscar guardianes</a>
+<a>Historial de pagos</a>
 </body>
 </html>

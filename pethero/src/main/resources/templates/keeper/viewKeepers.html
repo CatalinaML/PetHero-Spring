@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Guardianes</title>
+</head>
+<body>
+  <table>
+    <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Ciudad</th>
+      <th>Precio</th>
+      <th>Fecha de inicio</th>
+      <th>Fechade final</th>
+      <th>Horarios</th>
+      <th>Perfil</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="keeper : ${keepers}">
+      <td th:text="${keeper.name}"></td>
+      <td th:text="${keeper.lastname}"></td>
+      <td th:text="${keeper.city}"></td>
+      <td th:text="${keeper.remuneration}"></td>
+      <td th:text="${keeper.startDate}"></td>
+      <td th:text="${keeper.finishDate}"></td>
+      <td th:text=" ${keeper.startTime} + '-' + ${keeper.endTime}"></td>
+      <td><a th:href="@{/keeper/profile/} + ${keeper.idUser}" >Perfil</a></td>
+    </tr>
+    </tbody>
+  </table>
+</body>
+</html>
