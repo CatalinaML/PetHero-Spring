@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pethero.dao.OwnerDAO;
 import pethero.domain.Keeper;
 import pethero.domain.Owner;
+import pethero.domain.Reservation;
 import pethero.service.KeeperService;
 
 import javax.servlet.http.HttpSession;
@@ -32,15 +34,5 @@ public class ControllerKeeper {
         keeperService.save(keeper);
         session.setAttribute("user", keeper);
         return "keeper/indexKeeper";
-    }
-
-    @GetMapping("/profile/{idUser}")
-    public String viewProfile(@PathVariable int idUser, Model model, HttpSession session){
-        Optional<Keeper> opKeeper = keeperService.findById(idUser);
-        Keeper keeper = opKeeper.get();
-        Owner owner = (Owner) session.getAttribute("user");
-        model.addAttribute("keeper", keeper);
-        model.addAttribute("owner", owner);
-        return "keeper/viewProfile";
     }
 }

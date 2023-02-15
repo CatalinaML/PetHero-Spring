@@ -30,25 +30,32 @@
     </div>
 
 <div>
-    <from th:action="@{/reservation/newReservation" method="post" th:object="${reservation}">
-        <label>Fecha de inicio</label>
-        <input type="date" name="startDate">
-        <label>Fecha de finalización</label>
-        <input type="date" name="endDate">
-        <label>Horario de inicio</label>
-        <input type="time" name="startTime">
-        <label>Horario de finalización</label>
-        <input type="time" name="endTime">
+    <from th:action="@{/reservation/newReservation}" method="post" th:object="${reservation}">
 
-        <select name="name">
-            <!-- Hacer un if de las mascotas correspondientes!-->
+        <input type="hidden" name="idKeeper" value="${keeper.idUser}" th:field="*{idKeeper}">
+        <input type="hidden" name="idOwner" value="${owner.idUser}" th:field="*{idOwner}">
+
+        <label>Fecha de inicio</label>
+        <input type="date" name="startDate" th:field="*{startDate}">
+        <label>Fecha de finalización</label>
+        <input type="date" name="endDate" th:field="*{endDate}">
+        <label>Horario de inicio</label>
+        <input type="time" name="startTime" th:field="*{startTime}">
+        <label>Horario de finalización</label>
+        <input type="time" name="endTime" th:field="*{endTime}">
+
+        <select th:field="*{idPet}">
+            <option value="0" selected disabled hidden>Mascotas</option>
+            <div th:if="${pets != null and !pets.empty}">
+                <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.idPet}"></option>
+            </div>
         </select>
 
         <div>
-            <!--Precio total por las horas y lios días!-->
+            <!--Precio total por las horas y los días!-->
         </div>
 
-        <button type="submit">Solicitar</button>
+        <button type="submit" name="state" value="espera" th:field="*{state}">Solicitar</button>
     </from>
 </div>
 </body>
