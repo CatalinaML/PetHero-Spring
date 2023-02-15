@@ -30,6 +30,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String city;
+    private String type;
 
     public int getIdUser() {
         return idUser;
@@ -67,7 +68,11 @@ public class User implements Serializable {
         return city;
     }
 
-    public User(int idUser, String username, String password, String name, String lastname, String birthdate, String email, String phone, String city) {
+    public String getType() {
+        return type;
+    }
+
+    public User(int idUser, String username, String password, String name, String lastname, String birthdate, String email, String phone, String city, String type) {
         this.idUser = idUser;
         this.username = username;
         this.password = password;
@@ -77,9 +82,10 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.city = city;
+        this.type = type;
     }
 
-    public User(String username, String password, String name, String lastname, String birthdate, String email, String phone, String city) {
+    public User(String username, String password, String name, String lastname, String birthdate, String email, String phone, String city, String type) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -88,6 +94,7 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.city = city;
+        this.type = type;
     }
 
     public User() {
@@ -127,6 +134,10 @@ public class User implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
