@@ -3,7 +3,15 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/validity.css}">
     <title>Guardian</title>
+    <style>
+        input:invalid + span::after {
+          position: absolute;
+          content: "✖";
+          padding-left: 5px;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -36,13 +44,49 @@
         <input type="hidden" name="idOwner" value="${owner.idUser}" th:field="*{idOwner}">
 
         <label>Fecha de inicio</label>
-        <input type="date" name="startDate" th:field="*{startDate}">
+        <input id="startDate" th:oninput="dateValidation()"  type="date" name="startDate" th:min="${keeper.startDate}" th:max="${keeper.finishDate}" th:field="*{startDate}">
         <label>Fecha de finalización</label>
-        <input type="date" name="endDate" th:field="*{endDate}">
+        <input id="finishDate" type="date" name="endDate" disabled th:attr="max=${keeper.finishDate}" th:field="*{endDate}">
+
+        <!-- Pongo el script aca porque no se com oenlazar con url !-->
+        <script>
+            function dateValidation()
+            {
+                const startDate = document.getElementById("startDate");
+                const endDate = document.getElementById("finishDate");
+
+                endDate.setAttribute("min", startDate.value);
+
+                if (!endDate.value) // si todavia no puso fecha final
+                    endDate.disabled = false;
+                else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
+                    endDate.value = startDate.value;
+            }
+        </script>
+
         <label>Horario de inicio</label>
-        <input type="time" name="startTime" th:field="*{startTime}">
+        <input id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}">
+        <span class="validity"></span>
         <label>Horario de finalización</label>
-        <input type="time" name="endTime" th:field="*{endTime}">
+        <input id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}">
+        <span class="validity"></span>
+
+        <script>
+            function timeValidation()
+            {
+                let startTime = document.getElementById("startTime");
+                let endTime = document.getElementById("endTime");
+
+                let arrayStartTime = startTime.value.split(':');
+
+                if ((parseInt(arrayStartTime[0]) < 10))
+                    arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
+                else
+                    arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
+
+                endTime.setAttribute("min", arrayStartTime.join(':'));
+            }
+        </script>
 
         <select th:field="*{idPet}">
             <option value="0" selected disabled hidden>Mascotas</option>
@@ -58,5 +102,6 @@
         <button type="submit" name="state" value="espera" th:field="*{state}">Solicitar</button>
     </from>
 </div>
+<script th:src="@{/js/validation.js}"></script>
 </body>
 </html>
