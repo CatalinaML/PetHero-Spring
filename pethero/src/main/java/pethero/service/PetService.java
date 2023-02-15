@@ -12,5 +12,6 @@ public interface PetService {
     public Optional<Pet> findById(int id);
     public void update(Pet pet);
     public List<Pet> findByIdUser(int id);
+    public List<Pet> findBySize(int id, String size);
 }
 

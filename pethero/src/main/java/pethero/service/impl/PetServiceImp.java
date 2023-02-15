@@ -42,4 +42,9 @@ public class PetServiceImp implements PetService {
     public List<Pet> findByIdUser(int id) {
         return petDAO.findByIdOwner(id);
     }
+
+    @Override
+    public List<Pet> findBySize(int id, String size) {
+        return petDAO.findBySize(id, size);
+    }
 }
