@@ -28,7 +28,7 @@
       <td th:text="${keeper.startDate}"></td>
       <td th:text="${keeper.finishDate}"></td>
       <td th:text=" ${keeper.startTime} + '-' + ${keeper.endTime}"></td>
-      <td><a th:href="@{/keeper/profile/} + ${keeper.idUser}" >Perfil</a></td>
+      <td><a th:href="@{/owner/keeperProfile/} + ${keeper.idUser}" >Perfil</a></td>
     </tr>
     </tbody>
   </table>
