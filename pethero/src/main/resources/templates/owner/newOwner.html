@@ -6,7 +6,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/saveOwner}" method="post" th:object="${owner}">
+<form th:action="@{/owner/saveOwner}" method="post" th:object="${owner}">
   Username:
   <input type="text" name="username" th:field="*{username}">
 

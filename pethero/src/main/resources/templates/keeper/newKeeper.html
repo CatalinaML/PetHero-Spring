@@ -6,7 +6,7 @@
     <title>Nuevo guardian</title>
 </head>
 <body>
-<form th:action="@{/saveKeeper}" method="post" th:object="${keeper}">
+<form th:action="@{/keeper/saveKeeper}" method="post" th:object="${keeper}">
 
     Username:
     <input type="text" name="username" th:field="*{username}">
@@ -21,7 +21,7 @@
     <input type="text" name="lastname" th:field="*{lastname}">
 
     Fecha de nacimiento:
-    <input type="date" name="birthdate" th:field="*{birthdate}">
+    <input type="date" name="birthdate" th:field="*{birthdate}" id="fechamin">
 
     Email:
     <input type="email" name="email" th:field="*{email}">
