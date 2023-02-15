@@ -1,15 +1,17 @@
-package pethero.service;
+package pethero.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pethero.dao.KeeperDAO;
 import pethero.domain.Keeper;
+import pethero.service.KeeperService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class KeeperServiceImp implements KeeperService{
+public class KeeperServiceImp implements KeeperService {
     @Autowired
     private KeeperDAO keeperDAO;
     @Override
@@ -29,8 +31,8 @@ public class KeeperServiceImp implements KeeperService{
     }
 
     @Override
-    public Keeper findById(int id) {
-        return null;
+    public Optional<Keeper> findById(int id) {
+        return keeperDAO.findById(id);
     }
 
     @Override
