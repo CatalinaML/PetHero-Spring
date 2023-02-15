@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar mascota</title>
+</head>
+<body>
+  <a>Regresar</a>
+  <h1>Nueva mascota</h1>
+
+    <form th:action="@{/pet/savePet}" method="post" th:object="${pet}">
+      <label>Tipo de mascota</label>
+      <input type="radio" name="type" value="Perro" th:field="*{type}">
+      <input type="radio" name="type" value="Gato" th:field="*{type}">
+
+      <label>Nombre</label>
+      <input type="text" name="name" th:field="*{name}">
+
+      <label>Raza</label>
+      <input type="text" name="race" th:field="*{race}">
+
+      <label>Tamaño</label>
+      <input type="text" name="petSize" th:field="*{petSize}">
+
+      <label>Año de nacimiento</label>
+      <input type="number" name="birthdate" th:field="*{birthdate}">
+
+      <button type="submit">Siguiente</button>
+    </form>
+  </body>
+</html>

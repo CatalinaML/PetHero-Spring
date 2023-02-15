@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mascotas</title>
+</head>
+<body>
+<div>
+    <div th:each="pet : ${pets}">
+        <div>
+            <h6>Nombre</h6>
+            <p th:text="${pet.name}"></p>
+            <h6>Race</h6>
+            <p th:text="${pet.race}"></p>
+            <h6>Tamaño</h6>
+            <p th:text="${pet.petSize}"></p>
+            <h6>Nacimiento</h6>
+            <p th:text="${pet.birthdate}"></p>
+
+            <img th:src="@{'data:image/jpeg;charset=utf-8;base64,' + ${pet.base64Encoder(pet.imagePet.imageData)}}" alt="imagen de perfil">
+        </div>
+    </div>
+</div>
+</body>
+</html>
