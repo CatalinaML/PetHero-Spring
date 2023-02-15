@@ -6,6 +6,5 @@ import pethero.domain.User;
 
 public interface UserDAO extends JpaRepository<User, Integer> {
 
-    //@Query("SELECT * FROM user u WHERE u.username = :username")
-    //User findById(String username);
+    User findByUsername(String username);
 }
