@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ReservationDAO extends JpaRepository<Reservation, Long> {
 
-    List<Reservation> findByIdUser(int id);
+    List<Reservation> findByIdOwner(int id);
+    List<Reservation> findByIdKeeper(int id);
 }

@@ -14,6 +14,7 @@ import pethero.domain.Reservation;
 import pethero.service.KeeperService;
 import pethero.service.OwnerService;
 import pethero.service.PetService;
+import pethero.service.ReservationService;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -30,6 +31,8 @@ public class ControllerOwner {
     private KeeperService keeperService;
     @Autowired
     private PetService petService;
+    @Autowired
+    private ReservationService reservationService;
 
     @GetMapping("/newOwner")
     public String newOwner(Owner owner){
@@ -64,5 +67,17 @@ public class ControllerOwner {
         model.addAttribute("owner", owner);
         model.addAttribute("pets", pets);
         return "keeper/viewProfile";
+    }
+
+    @PostMapping("/newReservation/{idUser}")
+    public String saveReservation(@PathVariable int idUser, Reservation reservation, Model model, HttpSession session){
+        Owner owner = (Owner) session.getAttribute("user");
+        reservation.setIdOwner(owner.getIdUser());
+        reservation.setIdKeeper(idUser);
+        reservationService.save(reservation);
+        List<Keeper> keepers = keeperService.findAll();
+
+        model.addAttribute("keepers", keepers);
+        return "keeper/viewKeepers";
     }
 }

@@ -32,16 +32,13 @@
         <h3>Fecha de finalización</h3>
         <p th:text="${keeper.finishDate}"></p>
         <h3>Rango horario</h3>
-        <p th:text="${keeper.startTime} + '-' + ${keeper.endTime}"></p>
+        <p th:text="${keeper.startTime} + ' - ' + ${keeper.endTime}"></p>
         <h3>Tamaño que cuida</h3>
         <p th:text="${keeper.petSize}"></p>
     </div>
 
 <div>
-    <from th:action="@{/reservation/newReservation}" method="post" th:object="${reservation}">
-
-        <input type="hidden" name="idKeeper" value="${keeper.idUser}" th:field="*{idKeeper}">
-        <input type="hidden" name="idOwner" value="${owner.idUser}" th:field="*{idOwner}">
+    <form th:action="@{/owner/newReservation/} + ${keeper.idUser}" method="post" th:object="${reservation}">
 
         <label>Fecha de inicio</label>
         <input id="startDate" th:oninput="dateValidation()"  type="date" name="startDate" th:min="${keeper.startDate}" th:max="${keeper.finishDate}" th:field="*{startDate}">
@@ -99,8 +96,8 @@
             <!--Precio total por las horas y los días!-->
         </div>
 
-        <button type="submit" name="state" value="espera" th:field="*{state}">Solicitar</button>
-    </from>
+        <button type="submit">Solicitar</button>
+    </form>
 </div>
 <script th:src="@{/js/validation.js}"></script>
 </body>

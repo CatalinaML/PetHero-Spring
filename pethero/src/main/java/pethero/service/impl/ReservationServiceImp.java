@@ -23,8 +23,8 @@ public class ReservationServiceImp implements ReservationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Reservation> findByIdUser(int id) {
-        return reservationDAO.findByIdUser(id);
+    public List<Reservation> findByIdOwner(int id) {
+        return reservationDAO.findByIdOwner(id);
     }
 
     @Override
@@ -40,8 +40,13 @@ public class ReservationServiceImp implements ReservationService {
     }
 
     @Override
+    public List<Reservation> findByIdKeeper(int id) {
+        return reservationDAO.findByIdKeeper(id);
+    }
+
+    @Override
     @Transactional
     public void update(Reservation reservation) {
-        
+
     }
 }

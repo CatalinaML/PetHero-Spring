@@ -1,6 +1,8 @@
 package pethero.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -10,12 +12,19 @@ public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotNull
     private int idKeeper;
+    @NotNull
     private int idOwner;
+    @NotNull
     private int idPet;
+    @NotEmpty
     private String startDate;
+    @NotEmpty
     private String endDate;
+    @NotEmpty
     private String startTime;
+    @NotEmpty
     private String endTime;
     private String state;
 

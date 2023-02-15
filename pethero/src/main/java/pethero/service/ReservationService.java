@@ -8,9 +8,10 @@ import java.util.Optional;
 public interface ReservationService {
 
     public void save(Reservation reservation);
-    public List<Reservation> findByIdUser(int id);
+    public List<Reservation> findByIdOwner(int id);
     public void delete(Reservation reservation);
     public Optional<Reservation> findById(long id);
+    public List<Reservation> findByIdKeeper(int id);
     public void update(Reservation reservation);
 
 }
