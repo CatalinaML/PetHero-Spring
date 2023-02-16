@@ -20,7 +20,16 @@
   <input type="text" name="lastname" th:field="*{lastname}">
 
   Fecha de nacimiento:
-  <input type="date" name="birthdate" th:field="*{birthdate}">
+  <input type="date" id="birthdate" name="birthdate" th:field="*{birthdate}">
+  <script>
+            var fechaNacimiento = document.getElementById('birthdate');
+            var fechaMaxima = new Date();
+
+            fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 16);
+            fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
+
+            fechaNacimiento.setAttribute('max', fechaMaxima);
+    </script>
 
   Email:
   <input type="email" name="email" th:field="*{email}">

@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuevo guardian</title>
+    <style>
+        input:invalid + span::after {
+          position: absolute;
+          content: "✖";
+          padding-left: 5px;
+        }
+    </style>
 </head>
 <body>
 <form th:action="@{/keeper/saveKeeper}" method="post" th:object="${keeper}">
@@ -21,7 +28,16 @@
     <input type="text" name="lastname" th:field="*{lastname}">
 
     Fecha de nacimiento:
-    <input type="date" name="birthdate" th:field="*{birthdate}" id="fechamin">
+    <input type="date" name="birthdate" th:field="*{birthdate}" id="birthdate">
+    <script>
+            var fechaNacimiento = document.getElementById('birthdate');
+            var fechaMaxima = new Date();
+
+            fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 18);
+            fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
+
+            fechaNacimiento.setAttribute('max', fechaMaxima);
+    </script>
 
     Email:
     <input type="email" name="email" th:field="*{email}">
@@ -36,23 +52,57 @@
     <input type="number" name="remuneration" th:field="*{remuneration}" required>
 
     <label>Fecha de inicio</label>
-    <input type="date" name="starDate" th:field="*{startDate}">
+    <input type="date" name="starDate" id="startDate" th:oninput="dateValidation()" th:attr="min=${#dates.format(#dates.createNow(),'yyyy-MM-dd')}" th:field="*{startDate}">
 
-    <label>Fecha de finalizaccion</label>
-    <input type="date" name="finishDate" th:field="*{finishDate}">
+    <label>Fecha de finalizacion</label>
+    <input disabled type="date" name="finishDate" id="finishDate" th:field="*{finishDate}">
+
+    <script>
+        function dateValidation()
+            {
+                const startDate = document.getElementById("startDate");
+                const endDate = document.getElementById("finishDate");
+
+                endDate.setAttribute("min", startDate.value);
+
+                if (!endDate.value) // si todavia no puso fecha final
+                    endDate.disabled = false;
+                else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
+                    endDate.value = startDate.value;
+            }
+    </script>
 
     <label>Horario de inicio</label>
-    <input type="time" name="startTime" th:field="*{startTime}">
+    <input id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}">
+    <span class="validity"></span>
 
-    <label>Horario de finalizacion</label>
-    <input type="time" name="endTime" th:field="*{endTime}">
+    <label>Horario de finalización</label>
+    <input id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}">
+    <span class="validity"></span>
+
+    <script>
+            function timeValidation()
+            {
+                let startTime = document.getElementById("startTime");
+                let endTime = document.getElementById("endTime");
+
+                let arrayStartTime = startTime.value.split(':');
+
+                if ((parseInt(arrayStartTime[0]) < 10))
+                    arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
+                else
+                    arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
+
+                endTime.setAttribute("min", arrayStartTime.join(':'));
+            }
+    </script>
 
     <label>Tamaño a cuidar</label>
     <select name="size" th:field="*{petSize}" required>
-        <option value=""disabled selected>Tamaño</option>
-        <option value="pequeño">Pequeño</option>
-        <option value="mediano">Mediano</option>
-        <option value="grande">Grande</option>
+        <option value="" disabled selected>Tamaño</option>
+        <option value="Pequeño">Pequeño</option>
+        <option value="Mediano">Mediano</option>
+        <option value="Grande">Grande</option>
     </select>
 
     <button type="submit">Siguiente</button>

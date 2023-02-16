@@ -11,21 +11,64 @@
 
     <form th:action="@{/pet/savePet}" method="post" th:object="${pet}">
       <label>Tipo de mascota</label>
-      <input type="radio" name="type" value="Perro" th:text="Perro" th:field="*{type}">
-      <input type="radio" name="type" value="Gato" th:text="Gato" th:field="*{type}">
+
+      <input type="radio" name="type" value="Perro" id="radioDog" th:text="Perro" th:field="*{type}">
+      <input type="radio" name="type" value="Gato" id="radioCat"  th:text="Gato" th:field="*{type}">
+
+      <label>Raza</label>
+      <select id="dogRace" name="raceDog" th:field="*{race}" style="display: none;">
+        <option value="0" disabled selected>Raza</option>
+        <option value="Labrador">Labrador</option>
+        <option value="Bulldog francés">Bulldog francés</option>
+        <option value="Golden">Golden</option>
+        <option value="Pastor alemán">Pastor alemán</option>
+        <option value="Caniche">Caniche</option>
+        <option value="Bulldog inglés">Bulldog inglés</option>
+        <option value="Beagle">Beagle</option>
+        <option value="Rottweiler">Rottweiler</option>
+        <option value="Husky">Husky</option>
+        <option value="Boxer">Boxer</option>
+        <option value="Chihuahua">Chihuahua</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <select id="catRace" name="raceCat" th:field="*{race}" style="display: none;">
+        <option value="0" disabled selected>Raza</option>
+        <option value="Siberiano">Siberiano</option>
+        <option value="Siamés">Siamés</option>
+        <option value="Británico">Británico</option>
+        <option value="Montés">Montés</option>
+        <option value="Bobtail">Bobtail</option>
+        <option value="Americano">Americano</option>
+        <option value="Europeo">Europeo</option>
+        <option value="Persa">Persa</option>
+        <option value="Somalí">Somalí</option>
+        <option value="Javanés">Javanés</option>
+        <option value="Nebelung">Nebelung</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <script>
+            var opciones = document.getElementsByName('type');
+
+            opciones.forEach(function(opcion){
+                opcion.addEventListener('click', function(){
+                    var opcionSeleccionada = document.querySelector('input[name = "type"]:checked').value;
+                    document.getElementById('dogRace').style.display = (opcionSeleccionada == 'Perro') ? 'block' : 'none';
+                    document.getElementById('catRace').style.display = (opcionSeleccionada == 'Gato') ? 'block' : 'none';
+                });
+            });
+        </script>
 
       <label>Nombre</label>
       <input type="text" name="name" th:field="*{name}">
 
-      <label>Raza</label>
-      <input type="text" name="race" th:field="*{race}">
-
       <label>Tamaño</label>
       <select name="size" th:field="*{petSize}" required>
-        <option value=""disabled selected>Tamaño</option>
-        <option value="pequeño">Pequeño</option>
-        <option value="mediano">Mediano</option>
-        <option value="grande">Grande</option>
+        <option value="" disabled selected>Tamaño</option>
+        <option value="Pequeño">Pequeño</option>
+        <option value="Mediano">Mediano</option>
+        <option value="Grande">Grande</option>
       </select>
 
       <label>Año de nacimiento</label>
