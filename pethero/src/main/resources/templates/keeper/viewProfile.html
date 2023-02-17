@@ -47,10 +47,11 @@
                     <strong>Precio por hora: </strong><span th:text="${keeper.remuneration}"></span>
                     <input type="number" id="remuneration" hidden th:value="${keeper.remuneration}">
                     <br/>
-                    <strong>Fecha de inicio: </strong><span th:text="${keeper.startDate}"></span>
+                    <strong>Disponibilidad</strong><br/>
+                    <strong>Desde: </strong><span th:text="${keeper.startDate}"></span>
                     <input type="date" hidden id="startDate" th:value="${keeper.startDate}">
                     <br/>
-                    <strong>Fecha de finalización: </strong><span th:text="${keeper.finishDate}"></span>
+                    <strong>Hasta: </strong><span th:text="${keeper.finishDate}"></span>
                     <input type="date" id="endDate" th:value="${keeper.finishDate}" hidden/>
                     <br/>
                     <strong>Rango horario: </strong><span th:text="${keeper.startTime} + ' - ' + ${keeper.endTime}"></span>
@@ -120,11 +121,10 @@
                                     }
 
                                 if(today > endDate){ //No hay fechas disponibles
-                                console.log(todatFormat);
+                                console.log(todayFormat);
                                     document.getElementById("startDateInput").setAttribute("min", todayFormat);
                                 }else{
                                     if(today > startDate){
-
                                         document.getElementById("startDateInput").setAttribute("min", todayFormat);
                                     }else{
                                     console.log(startDateFormat);
@@ -198,8 +198,10 @@
                         <br/>
                         <div class="row">
                             <div class="col" id="contenedor" style="display: none;">
-                                <label>Precio total</label>
-                                <input class="form-control" type="text" id="total" readonly>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">$</span>
+                                    <input class="form-control" type="number" id="total" th:field="*{price}" readonly>
+                                </div>
                             </div>
                             <script>
                                 function calcular(){
@@ -235,7 +237,7 @@
 
                                     var inputValortotal = document.getElementById("total");
                                     document.getElementById("contenedor").style.display = 'block';
-                                    inputValortotal.value = "$" + Math.round(total);
+                                    inputValortotal.value = Math.round(total);
                                 }
                             </script>
                         </div>

@@ -74,6 +74,7 @@ public class ControllerOwner {
         Owner owner = (Owner) session.getAttribute("user");
         reservation.setIdOwner(owner.getIdUser());
         reservation.setIdKeeper(idUser);
+        reservation.setState("Espera");
         reservationService.save(reservation);
         List<Keeper> keepers = keeperService.findAll();
 

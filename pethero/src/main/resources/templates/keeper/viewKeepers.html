@@ -35,9 +35,9 @@
       <th>Apellido</th>
       <th>Ciudad</th>
       <th>Precio</th>
-      <th>Fecha de inicio</th>
-      <th>Fechade final</th>
+      <th>Disponibilidad</th>
       <th>Horarios</th>
+      <th>Tamaño</th>
       <th>Perfil</th>
     </tr>
     </thead>
@@ -47,9 +47,9 @@
       <td th:text="${keeper.lastname}"></td>
       <td th:text="${keeper.city}"></td>
       <td th:text="${keeper.remuneration}"></td>
-      <td th:text="${keeper.startDate}"></td>
-      <td th:text="${keeper.finishDate}"></td>
+      <td th:text="${keeper.startDate} + ' / ' + ${keeper.finishDate}"></td>
       <td th:text=" ${keeper.startTime} + '-' + ${keeper.endTime}"></td>
+      <td th:text="${keeper.petSize}"></td>
       <td><a class="btn btn-warning" th:href="@{/owner/keeperProfile/} + ${keeper.idUser}" >Perfil</a></td>
     </tr>
     </tbody>

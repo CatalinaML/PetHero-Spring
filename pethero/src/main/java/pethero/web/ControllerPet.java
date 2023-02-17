@@ -34,7 +34,7 @@ public class ControllerPet {
 
     @PostMapping("/savePet")
     public String savePet(Pet pet, Model model, HttpSession session){
-        User user = (User) session.getAttribute("enSesion");
+        User user = (User) session.getAttribute("user");
         pet.setIdOwner(user.getIdUser());
         Pet piolita = petService.save(pet);
 

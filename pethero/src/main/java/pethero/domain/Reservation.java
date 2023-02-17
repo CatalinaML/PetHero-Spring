@@ -27,8 +27,9 @@ public class Reservation implements Serializable {
     @NotEmpty
     private String endTime;
     private String state;
+    private float price;
 
-    public Reservation(long id, int idKeeper, int idOwner, int idPet, String stratDate, String endDate, String startTime, String endTime, String state) {
+    public Reservation(long id, int idKeeper, int idOwner, int idPet, String stratDate, String endDate, String startTime, String endTime, String state, float price) {
         this.id = id;
         this.idKeeper = idKeeper;
         this.idOwner = idOwner;
@@ -38,6 +39,7 @@ public class Reservation implements Serializable {
         this.startTime = startTime;
         this.endTime = endTime;
         this.state = state;
+        this.price = price;
     }
 
     public Reservation() {
@@ -113,5 +115,13 @@ public class Reservation implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
