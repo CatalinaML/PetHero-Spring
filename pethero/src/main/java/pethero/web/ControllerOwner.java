@@ -80,4 +80,9 @@ public class ControllerOwner {
         model.addAttribute("keepers", keepers);
         return "keeper/viewKeepers";
     }
+
+    @GetMapping("/index")
+    public String index(){
+        return"owner/indexOwner";
+    }
 }

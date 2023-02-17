@@ -44,7 +44,7 @@ public class ControllerPet {
 
     @GetMapping("/list")
     public String list(HttpSession session, Model model){
-        Owner owner = (Owner) session.getAttribute("enSesion");
+        Owner owner = (Owner) session.getAttribute("user");
         List<Pet> pets = petService.findByIdUser(owner.getIdUser());
 
         model.addAttribute("pets", pets);

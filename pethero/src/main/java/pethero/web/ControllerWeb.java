@@ -27,11 +27,6 @@ public class ControllerWeb {
     @Autowired
     private KeeperService keeperService;
 
-    @GetMapping("/loginculo")
-    public String login(){
-        return "loginculo";
-    }
-
     @PostMapping("/signin")
     public String signIn(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session){
         User user = userService.findByUsername(username);

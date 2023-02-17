@@ -3,102 +3,205 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/validity.css}">
     <title>Guardian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
-        input:invalid + span::after {
-          position: absolute;
-          content: "✖";
-          padding-left: 5px;
+        input:invalid{
+             outline: 2px solid red;
+        }
+
+        input:optional:valid{
         }
     </style>
 </head>
 <body>
-    <div>
-        <h3>Nombre</h3>
-        <p th:text="${keeper.name}"></p>
-        <h3>Apellido</h3>
-        <p th:text="${keeper.lastname}"></p>
-        <h3>Email</h3>
-        <p th:text="${keeper.email}"></p>
-        <h3>Phone</h3>
-        <p th:text="${keeper.phone}"></p>
-        <h3>Ciudad</h3>
-        <p th:text="${keeper.city}"></p>
-        <h3>Precio por hora</h3>
-        <p th:text="${keeper.remuneration}"></p>
-        <h3>Fecha de inicio</h3>
-        <p th:text="${keeper.startDate}"></p>
-        <h3>Fecha de finalización</h3>
-        <p th:text="${keeper.finishDate}"></p>
-        <h3>Rango horario</h3>
-        <p th:text="${keeper.startTime} + ' - ' + ${keeper.endTime}"></p>
-        <h3>Tamaño que cuida</h3>
-        <p th:text="${keeper.petSize}"></p>
+<nav class="navbar navbar-expand-lg bg-info" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <h1>PetHero</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
+</nav>
 
-<div>
-    <form th:action="@{/owner/newReservation/} + ${keeper.idUser}" method="post" th:object="${reservation}">
+<br/>
 
-        <label>Fecha de inicio</label>
-        <input id="startDate" th:oninput="dateValidation()"  type="date" name="startDate" th:min="${keeper.startDate}" th:max="${keeper.finishDate}" th:field="*{startDate}">
-        <label>Fecha de finalización</label>
-        <input id="finishDate" type="date" name="endDate" disabled th:attr="max=${keeper.finishDate}" th:field="*{endDate}">
-
-        <!-- Pongo el script aca porque no se com oenlazar con url !-->
-        <script>
-            function dateValidation()
-            {
-                const startDate = document.getElementById("startDate");
-                const endDate = document.getElementById("finishDate");
-
-                endDate.setAttribute("min", startDate.value);
-
-                if (!endDate.value) // si todavia no puso fecha final
-                    endDate.disabled = false;
-                else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
-                    endDate.value = startDate.value;
-            }
-        </script>
-
-        <label>Horario de inicio</label>
-        <input id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}">
-        <span class="validity"></span>
-        <label>Horario de finalización</label>
-        <input id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}">
-        <span class="validity"></span>
-
-        <script>
-            function timeValidation()
-            {
-                let startTime = document.getElementById("startTime");
-                let endTime = document.getElementById("endTime");
-
-                let arrayStartTime = startTime.value.split(':');
-
-                if ((parseInt(arrayStartTime[0]) < 10))
-                    arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
-                else
-                    arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
-
-                endTime.setAttribute("min", arrayStartTime.join(':'));
-            }
-        </script>
-
-        <select th:field="*{idPet}">
-            <option value="0" selected disabled hidden>Mascotas</option>
-            <div th:if="${pets != null and !pets.empty}">
-                <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.idPet}"></option>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Datos del guardián</h1>
+                </div>
+                <div class="card-body">
+                    <strong>Nombre: </strong><span th:text="${keeper.name}"></span>
+                    <br/>
+                    <strong>Apellido: </strong><span th:text="${keeper.lastname}"></span>
+                    <br/>
+                    <strong>Email: </strong><span th:text="${keeper.email}"></span>
+                    <br/>
+                    <strong>Telefono: </strong><span th:text="${keeper.phone}"></span>
+                    <br/>
+                    <strong>Ciudad: </strong><span th:text="${keeper.city}"></span>
+                    <br/>
+                    <strong>Precio por hora: </strong><span th:text="${keeper.remuneration}"></span>
+                    <br/>
+                    <strong>Fecha de inicio: </strong><span th:text="${keeper.startDate}"></span>
+                    <br/>
+                    <strong>Fecha de finalización: </strong><span th:text="${keeper.finishDate}"></span>
+                    <input type="date" id="endDate" th:value="${keeper.finishDate}" hidden/>
+                    <br/>
+                    <strong>Rango horario: </strong><span th:text="${keeper.startTime} + ' - ' + ${keeper.endTime}"></span>
+                    <br/>
+                    <strong>Tamaño que cuida: </strong><span th:text="${keeper.petSize}"></span>
+                </div>
             </div>
-        </select>
-
-        <div>
-            <!--Precio total por las horas y los días!-->
         </div>
 
-        <button type="submit">Solicitar</button>
-    </form>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Solicitud de reserva</h1>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/owner/newReservation/} + ${keeper.idUser}" method="post" th:object="${reservation}">
+
+                        <div class="row">
+                            <div class="col">
+                                <label>Fecha inicio</label>
+                                <input class="form-control" id="startDate" th:oninput="dateValidation()"  type="date" name="startDate" th:max="${keeper.finishDate}" th:field="*{startDate}" required>
+                            </div>
+                            <script>
+                                const today = new Date();
+                                const input = document.getElementById("endDate").value;
+                                console.log(input);
+
+                                const components = input.split("-");
+                                const year = components[0];
+                                const month = components[1];
+                                const day = components[2];
+
+                                const formatDate = year + "/" + month + "/" + day;
+
+                                const endDate = new Date(formatDate);
+
+                                if(today >= endDate){
+
+                                    var todayFormat;
+                                    if(today.getMonth() < 10){
+                                        var monthFormat = "0" + (today.getMonth()+1);
+                                        todayFormat = today.getFullYear() + "-" + monthFormat + "-" + today.getDate();
+                                    }else{
+                                        todayFormat = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
+                                    }
+
+                                    document.getElementById("startDate").setAttribute("min", todayFormat);
+                                }else{
+
+                                    var endDateFormat;
+                                    if(endDate.getMonth() < 10){
+                                        var monthFormatEnd = "0" + (endDate.getMonth()+1);
+                                        endDateFormat = endDate.getFullYear() + "-" + monthFormatEnd + "-" + endDate.getDate();
+                                    }else{
+                                        todayFendDateFormatormat = endDate.getFullYear() + "-" + (endDate.getMonth()+1) + "-" + endDate.getDate();
+                                    }
+
+                                    document.getElementById("startDate").setAttribute("min", endDateFormat);
+                                }
+                            </script>
+
+                            <div class="col">
+                                <label>Fecha fin</label>
+                                <input class="form-control" id="finishDate" type="date" name="endDate" disabled th:attr="max=${keeper.finishDate}" th:field="*{endDate}" required>
+                            </div>
+                            <!-- Pongo el script aca porque no se com oenlazar con url !-->
+                            <script>
+                                function dateValidation()
+                                {
+                                    const startDate = document.getElementById("startDate");
+                                    const endDate = document.getElementById("finishDate");
+
+                                    endDate.setAttribute("min", startDate.value);
+
+                                    if (!endDate.value) // si todavia no puso fecha final
+                                        endDate.disabled = false;
+                                    else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
+                                        endDate.value = startDate.value;
+                                }
+                            </script>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col">
+                                <label>Horario inicio</label>
+                                <input class="form-control" id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}" required>
+                            </div>
+                            <div class="col">
+                                <label>Horario fin</label>
+                                <input class="form-control" id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}" required>
+                            </div>
+                            <script>
+                                function timeValidation()
+                                {
+                                    let startTime = document.getElementById("startTime");
+                                    let endTime = document.getElementById("endTime");
+
+                                    let arrayStartTime = startTime.value.split(':');
+
+                                    if ((parseInt(arrayStartTime[0]) < 10))
+                                        arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
+                                    else
+                                        arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
+
+                                    endTime.setAttribute("min", arrayStartTime.join(':'));
+                                }
+                            </script>
+                        </div>
+
+                        <br/>
+
+                        <div class="row">
+                            <div class="col">
+                                <select class="form-select" th:field="*{idPet}">
+                                    <option value="0" selected disabled hidden>Mascotas</option>
+                                    <div th:if="${pets != null and !pets.empty}">
+                                        <option th:each="pet : ${pets}" th:text="${pet.name}" th:value="${pet.idPet}"></option>
+                                    </div>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!--Precio total por las horas y los días!-->
+                        </div>
+
+                        <br/>
+                        <div class="d-md-flex justify-content-md-end">
+                            <button class="btn btn-warning" type="submit">Solicitar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
-<script th:src="@{/js/validation.js}"></script>
+
+<footer style="position: fixed; width: 100%; bottom: 0;" class="bg-info text-white mt-3 p-3">
+    <div class="container">
+        <div class="col">
+            <p class="lead text-center">
+                Copyright &copy; PetHero - Catalina Liste
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -3,44 +3,134 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Nuevo Dueño</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        input:invalid{
+             outline: 2px solid red;
+        }
+
+        input:optional:valid{
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/owner/saveOwner}" method="post" th:object="${owner}">
-  Username:
-  <input type="text" name="username" th:field="*{username}">
 
-  Password:
-  <input type="password" name="password" th:field="*{password}">
+<nav class="navbar navbar-expand-lg bg-info" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <h1>PetHero</h1>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
 
-  Nombre:
-  <input type="text" name="name" th:field="*{name}">
+<div class="container">
+  <br/>
+  <form th:action="@{/owner/saveOwner}" method="post" th:object="${owner}">
 
-  Apellido:
-  <input type="text" name="lastname" th:field="*{lastname}">
+    <div class="card">
+      <div class="card-header">
+        <h1>Datos personales</h1>
+      </div>
+      <div class="card-body">
 
-  Fecha de nacimiento:
-  <input type="date" id="birthdate" name="birthdate" th:field="*{birthdate}">
-  <script>
-            var fechaNacimiento = document.getElementById('birthdate');
-            var fechaMaxima = new Date();
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Email</label>
+              <input class="form-control"  type="email" name="email" th:field="*{email}" required>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Nombre de usuario</label>
+              <input class="form-control" type="text" name="username" th:field="*{username}" required>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input class="form-control"  type="password" name="password" th:field="*{password}" required>
+            </div>
+          </div>
+        </div>
 
-            fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 16);
-            fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input class="form-control"  type="text" name="name" th:field="*{name}" required>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Apellido</label>
+              <input class="form-control"  type="text" name="lastname" th:field="*{lastname}" required>
+            </div>
+          </div>
+        </div>
 
-            fechaNacimiento.setAttribute('max', fechaMaxima);
-    </script>
 
-  Email:
-  <input type="email" name="email" th:field="*{email}">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Fecha de nacimiento</label>
+              <input class="form-control"  type="date" id="birthdate" name="birthdate" th:field="*{birthdate}" required>
 
-  Telefono:
-  <input type="tel" name="phone" th:field="*{phone}">
+              <!--Validación edad mayor a 16 años!-->
+              <script>
+                var fechaNacimiento = document.getElementById('birthdate');
+                var fechaMaxima = new Date();
 
-  Ciudad:
-  <input type="text" name="city" th:field="*{city}">
+                fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 16);
+                fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
 
-  <button type="submit">Siguiente</button>
-</form>
+                fechaNacimiento.setAttribute('max', fechaMaxima);
+              </script>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Telefono</label>
+              <input class="form-control" type="tel" name="phone" th:field="*{phone}">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Ciudad</label>
+              <input class="form-control" type="text" name="city" th:field="*{city}">
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="d-md-flex justify-content-md-end">
+          <button class="btn btn-warning" type="submit">Siguiente</button>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<footer style="position: fixed; width: 100%; bottom: 0;" class="bg-info text-white mt-3 p-3">
+  <div class="container">
+    <div class="col">
+      <p class="lead text-center">
+        Copyright &copy; PetHero - Catalina Liste
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 </body>
 </html>

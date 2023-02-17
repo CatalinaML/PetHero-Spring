@@ -4,108 +4,217 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuevo guardian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
-        input:invalid + span::after {
-          position: absolute;
-          content: "✖";
-          padding-left: 5px;
+        input:invalid{
+             outline: 2px solid red;
+        }
+
+        input:optional:valid{
         }
     </style>
 </head>
 <body>
-<form th:action="@{/keeper/saveKeeper}" method="post" th:object="${keeper}">
 
-    Username:
-    <input type="text" name="username" th:field="*{username}">
+<nav class="navbar navbar-expand-lg bg-info" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <h1>PetHero</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
 
-    Password:
-    <input type="password" name="password" th:field="*{password}">
+<div class="container">
 
-    Nombre:
-    <input type="text" name="name" th:field="*{name}">
+    <form th:action="@{/keeper/saveKeeper}" method="post" th:object="${keeper}">
 
-    Apellido:
-    <input type="text" name="lastname" th:field="*{lastname}">
+        <br/>
 
-    Fecha de nacimiento:
-    <input type="date" name="birthdate" th:field="*{birthdate}" id="birthdate">
-    <script>
-            var fechaNacimiento = document.getElementById('birthdate');
-            var fechaMaxima = new Date();
 
-            fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 18);
-            fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
+        <div class="card">
+            <div class="card-header">
+                <h1>Datos personales</h1>
+            </div>
+            <div class="card-body">
 
-            fechaNacimiento.setAttribute('max', fechaMaxima);
-    </script>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control"  type="email" name="email" th:field="*{email}" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Nombre de usuario</label>
+                            <input class="form-control" type="text" name="username" th:field="*{username}" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <input class="form-control"  type="password" name="password" th:field="*{password}" required>
+                        </div>
+                    </div>
+                </div>
 
-    Email:
-    <input type="email" name="email" th:field="*{email}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input class="form-control"  type="text" name="name" th:field="*{name}" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Apellido</label>
+                            <input class="form-control"  type="text" name="lastname" th:field="*{lastname}" required>
+                        </div>
+                    </div>
+                </div>
 
-    Telefono:
-    <input type="tel" name="phone" th:field="*{phone}">
 
-    Ciudad:
-    <input type="text" name="city" th:field="*{city}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Fecha de nacimiento</label>
+                            <input class="form-control"  type="date" id="birthdate" name="birthdate" th:field="*{birthdate}" required>
 
-    <label>Remuneracion</label>
-    <input type="number" name="remuneration" th:field="*{remuneration}" required>
+                            <!--Validación edad mayor a 18 años!-->
+                            <script>
+                                var fechaNacimiento = document.getElementById('birthdate');
+                                var fechaMaxima = new Date();
 
-    <label>Fecha de inicio</label>
-    <input type="date" name="starDate" id="startDate" th:oninput="dateValidation()" th:attr="min=${#dates.format(#dates.createNow(),'yyyy-MM-dd')}" th:field="*{startDate}">
+                                fechaMaxima.setFullYear(fechaMaxima.getFullYear() - 18);
+                                fechaMaxima = fechaMaxima.toISOString().substr(0, 10);
 
-    <label>Fecha de finalizacion</label>
-    <input disabled type="date" name="finishDate" id="finishDate" th:field="*{finishDate}">
+                                fechaNacimiento.setAttribute('max', fechaMaxima);
+                            </script>
+                        </div>
+                    </div>
+                </div>
 
-    <script>
-        function dateValidation()
-            {
-                const startDate = document.getElementById("startDate");
-                const endDate = document.getElementById("finishDate");
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input class="form-control" type="tel" name="phone" th:field="*{phone}">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Ciudad</label>
+                            <input class="form-control" type="text" name="city" th:field="*{city}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                endDate.setAttribute("min", startDate.value);
+        <br/>
 
-                if (!endDate.value) // si todavia no puso fecha final
-                    endDate.disabled = false;
-                else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
-                    endDate.value = startDate.value;
-            }
-    </script>
+        <div class="card">
+            <div class="card-header">
+                <h1>Datos del servicio</h1>
+            </div>
+            <div class="card-body">
 
-    <label>Horario de inicio</label>
-    <input id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}">
-    <span class="validity"></span>
+                <div class="row">
+                    <div class="col">
+                        <label>Remuneracion</label>
+                        <input class="form-control" type="number" name="remuneration" th:field="*{remuneration}" required>
+                    </div>
 
-    <label>Horario de finalización</label>
-    <input id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}">
-    <span class="validity"></span>
+                    <div class="col">
+                        <label>Tamaño a cuidar</label>
+                        <select class="form-select" name="size" th:field="*{petSize}" required>
+                            <option value="" disabled selected>Tamaño</option>
+                            <option value="Pequeño">Pequeño</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Grande">Grande</option>
+                        </select>
+                    </div>
+                </div>
 
-    <script>
-            function timeValidation()
-            {
-                let startTime = document.getElementById("startTime");
-                let endTime = document.getElementById("endTime");
+                <div class="row">
+                    <div class="col">
+                        <label>Fecha de inicio</label>
+                        <input class="form-control" type="date" name="starDate" id="startDate" th:oninput="dateValidation()" th:attr="min=${#dates.format(#dates.createNow(),'yyyy-MM-dd')}" th:field="*{startDate}" required>
+                    </div>
+                    <div class="col">
+                        <label>Fecha de finalizacion</label>
+                        <input class="form-control" disabled type="date" name="finishDate" id="finishDate" th:field="*{finishDate}" required>
+                        <script>
+                            function dateValidation()
+                                {
+                                    const startDate = document.getElementById("startDate");
+                                    const endDate = document.getElementById("finishDate");
 
-                let arrayStartTime = startTime.value.split(':');
+                                    endDate.setAttribute("min", startDate.value);
 
-                if ((parseInt(arrayStartTime[0]) < 10))
-                    arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
-                else
-                    arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
+                                    if (!endDate.value) // si todavia no puso fecha final
+                                        endDate.disabled = false;
+                                    else if (startDate.value >= endDate.value)// si ya habia puesto fecha final y la nueva inicial es mayor
+                                        endDate.value = startDate.value;
+                                }
+                        </script>
+                    </div>
+                </div>
 
-                endTime.setAttribute("min", arrayStartTime.join(':'));
-            }
-    </script>
+                <div class="row">
+                    <div class="col">
+                        <label>Horario de inicio</label>
+                        <input class="form-control" id="startTime" type="time" oninput="timeValidation()" name="startTime" th:min="${keeper.startTime}" th:max="${keeper.endTime}" th:field="*{startTime}" required>
+                        <span class="validity"></span>
+                    </div>
+                    <div class="col">
+                        <label>Horario de finalización</label>
+                        <input class="form-control" id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}" required>
+                        <span class="validity"></span>
 
-    <label>Tamaño a cuidar</label>
-    <select name="size" th:field="*{petSize}" required>
-        <option value="" disabled selected>Tamaño</option>
-        <option value="Pequeño">Pequeño</option>
-        <option value="Mediano">Mediano</option>
-        <option value="Grande">Grande</option>
-    </select>
+                        <script>
+                                function timeValidation()
+                                {
+                                    let startTime = document.getElementById("startTime");
+                                    let endTime = document.getElementById("endTime");
 
-    <button type="submit">Siguiente</button>
-</form>
+                                    let arrayStartTime = startTime.value.split(':');
+
+                                    if ((parseInt(arrayStartTime[0]) < 10))
+                                        arrayStartTime[0] = `0${(parseInt(arrayStartTime[0]) + 1)}`;
+                                    else
+                                        arrayStartTime[0] = (parseInt(arrayStartTime[0]) + 1).toString();
+
+                                    endTime.setAttribute("min", arrayStartTime.join(':'));
+                                }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="d-md-flex justify-content-md-end">
+            <button class="btn btn-warning" type="submit">Siguiente</button>
+        </div>
+    </form>
+</div>
+
+<footer style="position: fixed; width: 100%; bottom: 0;" class="bg-info text-white mt-3 p-3">
+    <div class="container">
+        <div class="col">
+            <p class="lead text-center">
+                Copyright &copy; PetHero - Catalina Liste
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
 </body>
 </html>
