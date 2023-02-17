@@ -45,8 +45,10 @@
                     <strong>Ciudad: </strong><span th:text="${keeper.city}"></span>
                     <br/>
                     <strong>Precio por hora: </strong><span th:text="${keeper.remuneration}"></span>
+                    <input type="number" id="remuneration" hidden th:value="${keeper.remuneration}">
                     <br/>
                     <strong>Fecha de inicio: </strong><span th:text="${keeper.startDate}"></span>
+                    <input type="date" hidden id="startDate" th:value="${keeper.startDate}">
                     <br/>
                     <strong>Fecha de finalización: </strong><span th:text="${keeper.finishDate}"></span>
                     <input type="date" id="endDate" th:value="${keeper.finishDate}" hidden/>
@@ -69,24 +71,12 @@
                         <div class="row">
                             <div class="col">
                                 <label>Fecha inicio</label>
-                                <input class="form-control" id="startDate" th:oninput="dateValidation()"  type="date" name="startDate" th:max="${keeper.finishDate}" th:field="*{startDate}" required>
+                                <input class="form-control" id="startDateInput" th:oninput="dateValidation()"  type="date" name="startDate" th:max="${keeper.finishDate}" th:field="*{startDate}" required>
                             </div>
                             <script>
-                                const today = new Date();
-                                const input = document.getElementById("endDate").value;
-                                console.log(input);
-
-                                const components = input.split("-");
-                                const year = components[0];
-                                const month = components[1];
-                                const day = components[2];
-
-                                const formatDate = year + "/" + month + "/" + day;
-
-                                const endDate = new Date(formatDate);
-
-                                if(today >= endDate){
-
+                                //Fecha actual
+                                    const today = new Date();
+                                    //Formateado
                                     var todayFormat;
                                     if(today.getMonth() < 10){
                                         var monthFormat = "0" + (today.getMonth()+1);
@@ -95,18 +85,51 @@
                                         todayFormat = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate();
                                     }
 
-                                    document.getElementById("startDate").setAttribute("min", todayFormat);
-                                }else{
+                                //Fecha final
+                                    //Formateado para conseguir el date
+                                    const inputEnd = document.getElementById("endDate").value;
 
-                                    var endDateFormat;
-                                    if(endDate.getMonth() < 10){
-                                        var monthFormatEnd = "0" + (endDate.getMonth()+1);
-                                        endDateFormat = endDate.getFullYear() + "-" + monthFormatEnd + "-" + endDate.getDate();
+                                    const componentsEnd = inputEnd.split("-");
+                                    const yearE = componentsEnd[0];
+                                    const monthE = componentsEnd[1];
+                                    const dayE = componentsEnd[2];
+
+                                    const formatDateEnd = yearE + "/" + monthE + "/" + dayE;
+
+                                    const endDate = new Date(formatDateEnd);
+
+                                //Fecha inicial
+                                    //Formateado para conseguir el date
+                                    const inputStart = document.getElementById("startDate").value;
+
+                                    const componentsStart = inputStart.split("-");
+                                    const yearS = componentsStart[0];
+                                    const monthS = componentsStart[1];
+                                    const dayS = componentsStart[2];
+
+                                    const formatDateStart = yearS + "/" + monthS + "/" + dayS;
+
+                                    const startDate = new Date(formatDateStart);
+                                    //Formateado
+                                    var startDateFormat
+                                    if(startDate.getMonth() < 10){
+                                        var monthFormat = "0" + (startDate.getMonth()+1);
+                                        startDateFormat = startDate.getFullYear() + "-" + monthFormat + "-" + startDate.getDate();
                                     }else{
-                                        todayFendDateFormatormat = endDate.getFullYear() + "-" + (endDate.getMonth()+1) + "-" + endDate.getDate();
+                                        startDateFormat = startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + startDate.getDate();
                                     }
 
-                                    document.getElementById("startDate").setAttribute("min", endDateFormat);
+                                if(today > endDate){ //No hay fechas disponibles
+                                console.log(todatFormat);
+                                    document.getElementById("startDateInput").setAttribute("min", todayFormat);
+                                }else{
+                                    if(today > startDate){
+
+                                        document.getElementById("startDateInput").setAttribute("min", todayFormat);
+                                    }else{
+                                    console.log(startDateFormat);
+                                        document.getElementById("startDateInput").setAttribute("min", startDateFormat);
+                                    }
                                 }
                             </script>
 
@@ -118,7 +141,7 @@
                             <script>
                                 function dateValidation()
                                 {
-                                    const startDate = document.getElementById("startDate");
+                                    const startDate = document.getElementById("startDateInput");
                                     const endDate = document.getElementById("finishDate");
 
                                     endDate.setAttribute("min", startDate.value);
@@ -139,7 +162,7 @@
                             </div>
                             <div class="col">
                                 <label>Horario fin</label>
-                                <input class="form-control" id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}" required>
+                                <input oninput="calcular()" class="form-control" id="endTime" type="time" name="endTime" th:max="${keeper.endTime}" th:field="*{endTime}" required>
                             </div>
                             <script>
                                 function timeValidation()
@@ -172,8 +195,49 @@
                             </div>
                         </div>
 
+                        <br/>
                         <div class="row">
-                            <!--Precio total por las horas y los días!-->
+                            <div class="col" id="contenedor" style="display: none;">
+                                <label>Precio total</label>
+                                <input class="form-control" type="text" id="total" readonly>
+                            </div>
+                            <script>
+                                function calcular(){
+
+                                    const startTime = document.getElementById("startTime").value;
+                                    const endTime = document.getElementById("endTime").value;
+
+                                    const startTimeComponents = startTime.split(":");
+                                    const endTimeComponents = endTime.split(":");
+
+                                    const startHours = parseInt(startTimeComponents[0]);
+                                    const startMinutes = parseInt(startTimeComponents[1]);
+                                    const endHours = parseInt(endTimeComponents[0]);
+                                    const endMinutes = parseInt(endTimeComponents[1]);
+
+                                    const minutes = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+                                    const hours = Math.floor(minutes / 60);
+                                    const restMinutes = minutes % 60;
+
+                                    const startDate = new Date(document.getElementById("startDateInput").value);
+                                    const finishDate = new Date(document.getElementById("finishDate").value);
+
+                                    const diferenceMiliseconds = finishDate.getTime() - startDate.getTime();
+                                    const days = Math.floor(diferenceMiliseconds / (1000 * 60 * 60 * 24)) + 1;
+
+                                    const remuneration = document.getElementById("remuneration").value;
+
+                                    const time = hours * days;
+
+                                    const horasRem = time * remuneration;
+                                    const minRem = (restMinutes * remuneration) / 60;
+                                    const total = horasRem + minRem;
+
+                                    var inputValortotal = document.getElementById("total");
+                                    document.getElementById("contenedor").style.display = 'block';
+                                    inputValortotal.value = "$" + Math.round(total);
+                                }
+                            </script>
                         </div>
 
                         <br/>
