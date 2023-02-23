@@ -1,0 +1,18 @@
+.pet-list-image-container {
+    display: grid;
+    align-items: center;
+}
+
+.style-img{
+    padding-left: 2px;
+}
+
+input:invalid{
+     outline: 2px solid red;
+}
+
+.new-pet-breed-image{
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+}

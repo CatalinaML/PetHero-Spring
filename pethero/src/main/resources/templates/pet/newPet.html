@@ -5,14 +5,7 @@
     <meta charset="UTF-8">
     <title>Registrar mascota</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <style>
-          input:invalid{
-               outline: 2px solid red;
-          }
-
-          input:optional:valid{
-          }
-      </style>
+    <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet" />
 </head>
 <body>
 
@@ -42,75 +35,54 @@
         </div>
         <div class="card-body">
           <div class="container">
-            <label>Mascota</label>
-            <div class="form-check">
-              <input checked class="form-check-input" type="radio" name="type" value="Perro" id="radioDog" th:text="Perro" th:field="*{type}">
+            <div style="display: flex; justify-content: space-evenly;">
+              <div>
+                <label>Mascota</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="type" value="Perro" id="radioDog" th:text="Perro" th:field="*{type}">
+                </div>
+                <script>
+                  document.getElementById("radioDog").setAttribute("checked","checked");
+                </script>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="type" value="Gato" id="radioCat"  th:text="Gato" th:field="*{type}">
+                </div>
+
+                <label>Raza</label>
+                <select class="form-select" id="dogRace" name="raceDog" th:onchange="raceSelectedDog([[${dogBreeds}]])" required style="max-height: 40px; min-width: 400px;">
+                  <option value=" " disabled selected>Raza</option>
+                  <option th:each="breed : ${dogBreeds}" th:text="${breed.name}" th:value="${breed.name}"/>
+                </select>
+
+                <select class="form-select" id="catRace" name="raceCat" th:onchange="raceSelectedCat([[${catBreeds}]])" required style="display: none; max-height: 40px; min-width: 400px;">
+                  <option value=" " disabled selected>Raza</option>
+                  <option th:each="breed : ${catBreeds}" th:text="${breed.name}" th:value="${breed.name}"></option>
+                </select>
+
+                <label>Nombre</label>
+                <input class="form-control" type="text" name="name" th:field="*{name}" required>
+
+                <label>Año de nacimiento</label>
+                <input class="form-control" type="number" name="birthdate" th:field="*{birthdate}" required>
+
+                <label>Tamaño</label>
+                <select class="form-select" name="size" th:field="*{petSize}" required>
+                  <option value="" disabled selected>Tamaño</option>
+                  <option value="Pequeño">Pequeño</option>
+                  <option value="Mediano">Mediano</option>
+                  <option value="Grande">Grande</option>
+                </select>
+              </div>
+
+              <div>
+                <img src="https://autumntrailsvet.com/wp-content/uploads/2022/06/what-are-similarities-between-cats-and-dogs.jpg" id="breedImage" class="rounded float-end new-pet-breed-image"/>
+              </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="type" value="Gato" id="radioCat"  th:text="Gato" th:field="*{type}">
-            </div>
+
+
+            <input hidden id="raceInput" value="" th:field="*{race}"/>
           </div>
-
-          <label>Raza</label>
-          <select class="form-select" id="dogRace" name="raceDog" th:field="*{race}" style="display: none;" required>
-            <option value="0" disabled selected>Raza</option>
-            <option value="Labrador">Labrador</option>
-            <option value="Bulldog francés">Bulldog francés</option>
-            <option value="Golden">Golden</option>
-            <option value="Pastor alemán">Pastor alemán</option>
-            <option value="Caniche">Caniche</option>
-            <option value="Bulldog inglés">Bulldog inglés</option>
-            <option value="Beagle">Beagle</option>
-            <option value="Rottweiler">Rottweiler</option>
-            <option value="Husky">Husky</option>
-            <option value="Boxer">Boxer</option>
-            <option value="Chihuahua">Chihuahua</option>
-            <option value="Otro">Otro</option>
-          </select>
-
-          <select class="form-select" id="catRace" name="raceCat" th:field="*{race}" style="display: none;" required>
-            <option value="0" disabled selected>Raza</option>
-            <option value="Siberiano">Siberiano</option>
-            <option value="Siamés">Siamés</option>
-            <option value="Británico">Británico</option>
-            <option value="Montés">Montés</option>
-            <option value="Bobtail">Bobtail</option>
-            <option value="Americano">Americano</option>
-            <option value="Europeo">Europeo</option>
-            <option value="Persa">Persa</option>
-            <option value="Somalí">Somalí</option>
-            <option value="Javanés">Javanés</option>
-            <option value="Nebelung">Nebelung</option>
-            <option value="Otro">Otro</option>
-          </select>
-
-          <script>
-              var opciones = document.getElementsByName('type');
-
-              opciones.forEach(function(opcion){
-                  opcion.addEventListener('click', function(){
-                      var opcionSeleccionada = document.querySelector('input[name = "type"]:checked').value;
-                      document.getElementById('dogRace').style.display = (opcionSeleccionada == 'Perro') ? 'block' : 'none';
-                      document.getElementById('catRace').style.display = (opcionSeleccionada == 'Gato') ? 'block' : 'none';
-                  });
-              });
-          </script>
-
-          <br/>
-
-          <label>Nombre</label>
-          <input class="form-control" type="text" name="name" th:field="*{name}" required>
-
-          <label>Año de nacimiento</label>
-          <input class="form-control" type="number" name="birthdate" th:field="*{birthdate}" required>
-
-          <label>Tamaño</label>
-          <select class="form-select" name="size" th:field="*{petSize}" required>
-            <option value="" disabled selected>Tamaño</option>
-            <option value="Pequeño">Pequeño</option>
-            <option value="Mediano">Mediano</option>
-            <option value="Grande">Grande</option>
-          </select>
 
           <br/>
 
@@ -135,6 +107,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+  <script th:src="@{/js/petRaceSelector.js}"></script>
 
   </body>
 </html>
