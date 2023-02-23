@@ -1,6 +1,7 @@
 package pethero.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,21 @@ public class ControllerWeb {
     @Autowired
     private KeeperService keeperService;
 
+    @GetMapping("/login")
+    public String login(){
+        return "index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "index";
+    }
     @PostMapping("/signin")
     public String signIn(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session){
         User user = userService.findByUsername(username);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if(user != null) {
-            if (user.getPassword().equals(password)) {
-
+            if (encoder.matches(password, user.getPassword())) {
                 if (user.getType().equals("keeper")) {
                     Optional<Keeper> optKeeper =  keeperService.findById(user.getIdUser());
                     session.setAttribute("user", optKeeper.get());
@@ -44,6 +54,6 @@ public class ControllerWeb {
                 }
             }
         }
-        return "loginculo";
+        return "index";
     }
 }
