@@ -46,9 +46,4 @@ public class ControllerWeb {
         }
         return "loginculo";
     }
-
-    @GetMapping("/newAccount")
-    public String newAccount(Model model){
-        return "accountType";
-    }
 }

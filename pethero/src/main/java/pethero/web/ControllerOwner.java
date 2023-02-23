@@ -17,7 +17,6 @@ import pethero.service.PetService;
 import pethero.service.ReservationService;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

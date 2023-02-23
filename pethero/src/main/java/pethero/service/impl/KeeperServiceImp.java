@@ -1,6 +1,7 @@
 package pethero.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pethero.dao.KeeperDAO;
@@ -22,6 +23,9 @@ public class KeeperServiceImp implements KeeperService {
 
     @Override
     public void save(Keeper keeper) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String passEncript = encoder.encode(keeper.getPassword());
+        keeper.setPassword(passEncript);
         keeperDAO.save(keeper);
     }
 

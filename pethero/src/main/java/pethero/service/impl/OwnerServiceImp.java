@@ -1,6 +1,7 @@
 package pethero.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pethero.dao.OwnerDAO;
@@ -15,7 +16,10 @@ public class OwnerServiceImp implements OwnerService {
     private OwnerDAO ownerDAO;
     @Override
     @Transactional
-    public void save(Owner owner) {
+    public void save(Owner owner){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String passEncript = encoder.encode(owner.getPassword());
+        owner.setPassword(passEncript);
         ownerDAO.save(owner);
     }
 
