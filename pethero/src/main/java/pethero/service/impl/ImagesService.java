@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pethero.dao.ImagesDAO;
 import org.springframework.web.multipart.MultipartFile;
 import pethero.domain.Image;
-import pethero.domain.ImageUtil;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -17,31 +16,28 @@ public class ImagesService{
     private ImagesDAO imagesDAO;
 
     public Image uploadImage(MultipartFile file) throws IOException {
-
-        Image saved = imagesDAO.save(Image.builder()
+        return imagesDAO.save(Image.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .imageData(ImageUtil.compressImage(file.getBytes())).build());
-
-        return saved;
+                .imageData(file.getBytes()).build());
     }
 
     @Transactional
     public Image getInfoByImageById(long id) {
         Optional<Image> dbImage = imagesDAO.findById(id);
-
-        return Image.builder()
-                .name(dbImage.get().getName())
-                .type(dbImage.get().getType())
-                .imageData(ImageUtil.decompressImage(dbImage.get().getImageData())).build();
-
+        return dbImage.map(image -> Image.builder()
+                .name(image.getName())
+                .type(image.getType())
+                .imageData(image.getImageData()).build()).orElse(null);
     }
 
     @Transactional
     public byte[] getImage(Long id) {
         Optional<Image> dbImage = imagesDAO.findById(id);
-        byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
-        return image;
+        if(dbImage.isPresent()) {
+            return dbImage.get().getImageData();
+        }
+        return new byte[0];
     }
 
 }

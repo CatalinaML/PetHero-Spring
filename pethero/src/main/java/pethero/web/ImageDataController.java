@@ -1,8 +1,10 @@
 package pethero.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 import pethero.domain.Image;
 import pethero.domain.Pet;
 import pethero.service.impl.ImagesService;
@@ -11,7 +13,7 @@ import pethero.service.PetService;
 import java.io.IOException;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/image")
 public class ImageDataController {
 
@@ -34,17 +36,17 @@ public class ImageDataController {
 //    }
 
     @PostMapping("/{petId}")
-    public String uploadImage(@PathVariable int petId, @RequestParam("image") MultipartFile image, @RequestParam("plan") MultipartFile plan) throws IOException {
+    public String uploadImage(@PathVariable int petId, @RequestParam("image") MultipartFile image, @RequestParam("plan") MultipartFile plan, Pet pet) throws IOException {
         // obtengo el Pet para setearle la imagen correspondiente
         final Optional<Pet> optPet = petService.findById(petId);
         if (optPet.isPresent()) {
-            final Pet pet = optPet.get();
+            final Pet petImg = optPet.get();
             final Image imagePet = imageDataService.uploadImage(image);
             final Image vaccinationPlan = imageDataService.uploadImage(plan);
 
-            pet.setImagePet(imagePet);
-            pet.setVaccinationPlan(vaccinationPlan);
-            petService.save(pet);
+            petImg.setImagePet(imagePet);
+            petImg.setVaccinationPlan(vaccinationPlan);
+            petService.save(petImg);
 
             return "pet/newPet";
         } else {
