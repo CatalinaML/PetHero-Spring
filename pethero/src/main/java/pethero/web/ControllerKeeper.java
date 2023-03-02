@@ -13,8 +13,11 @@ import pethero.domain.Keeper;
 import pethero.domain.Owner;
 import pethero.domain.Reservation;
 import pethero.service.KeeperService;
+import pethero.service.ReservationService;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,6 +25,8 @@ import java.util.Optional;
 public class ControllerKeeper {
     @Autowired
     private KeeperService keeperService;
+    @Autowired
+    private ReservationService reservationService;
 
     @GetMapping("/newKeeper")
     public String newKeeper(Keeper keeper){
@@ -33,6 +38,33 @@ public class ControllerKeeper {
         keeper.setType("keeper");
         keeperService.save(keeper);
         session.setAttribute("user", keeper);
+        return "keeper/indexKeeper";
+    }
+
+    @GetMapping("/services")
+    public String services(HttpSession session, Model model){
+        Keeper keeper = (Keeper) session.getAttribute("user");
+        List<Reservation> reservations = reservationService.findByIdKeeper(keeper.getIdUser());
+
+        List<Reservation> onHold = new ArrayList<>();
+        List<Reservation> accepted = new ArrayList<>();
+        List<Reservation> confirmed = new ArrayList<>();
+        List<Reservation> finished = new ArrayList<>();
+
+        for(Reservation reservation : reservations){
+            if(reservation.getState().equals("Aceptada")){
+                accepted.add(reservation);
+            }else if(reservation.getState().equals("Confirmada")){
+                confirmed.add(reservation);
+            }else{
+                finished.add(reservation);
+            }
+        }
+        model.addAttribute("onHold" , onHold);
+        return null;
+    }
+    @GetMapping("/index")
+    public String index(){
         return "keeper/indexKeeper";
     }
 }
