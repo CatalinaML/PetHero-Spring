@@ -10,4 +10,6 @@ public interface OwnerService {
     public void delete(Owner owner);
     public Optional<Owner> findById(int id);
     public void update(Owner owner);
+
+    public Owner findByUsername(String username);
 }

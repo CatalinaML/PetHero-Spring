@@ -40,4 +40,9 @@ public class OwnerServiceImp implements OwnerService {
     public void update(Owner owner) {
 
     }
+
+    @Override
+    public Owner findByUsername(String username) {
+        return ownerDAO.findByUsername(username);
+    }
 }
