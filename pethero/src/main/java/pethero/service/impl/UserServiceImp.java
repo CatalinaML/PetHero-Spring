@@ -49,15 +49,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        pethero.domain.User user = userDAO.findByUsername(username);
+        User user = userDAO.findByUsername(username);
         if(user == null){
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("Usuario no encontrado");
         }
 
         List<GrantedAuthority> rol = new ArrayList<GrantedAuthority>();
 
         rol.add(new SimpleGrantedAuthority(user.getType()));
-        System.out.println("rol = " + rol);
+
+        System.out.println(new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),rol));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),rol);
     }
 }

@@ -1,5 +1,7 @@
 package pethero.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pethero.domain.User;
 
 import java.util.List;
