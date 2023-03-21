@@ -1,4 +1,4 @@
-package pethero.web;
+package pethero.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Configuration
 @EnableWebSecurity
@@ -30,17 +31,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/owner/index/**","/owner/viewKeepers/**", "/owner/keeperProfile/**", "/owner/newReservation/**", "/pet/newPet/**", "/pet/list/**")
-                .hasRole("owner")
-                .antMatchers("/")
-                .hasRole("keeper")
+                .antMatchers("/viewKeepers/**", "/keeperProfile/**", "/newReservation/**", "/newPet/**", "/savePet/**", "/list/**", "/profile/**").hasAuthority("OWNER")
+                .antMatchers("/services").hasAuthority("KEEPER")
+                .antMatchers("/").hasAnyRole("KEEPER", "OWNER")
+                .antMatchers("/login").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .and()
                 .logout()
-                .logoutUrl("/logout") // URL para el logout
-                .invalidateHttpSession(true) // invalidar la sesión HTTP
-                .deleteCookies("JSESSIONID"); // eliminar las cookies de sesión;
+                .logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID").permitAll();
     }
 }
