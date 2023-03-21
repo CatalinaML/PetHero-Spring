@@ -10,12 +10,14 @@
 <body>
 
 <nav class="navbar navbar-expand-lg bg-info" style="background-color: #e3f2fd;">
-  <h1>PetHero</h1>
+  <div class="container-fluid">
+    <h1>PetHero</h1>
+  </div>
 </nav>
 
 <div class="container">
   <br/>
-  <form th:action="@{/owner/saveOwner}" method="post" th:object="${owner}">
+  <form th:action="@{/saveOwner}" method="post" th:object="${owner}">
 
     <div class="card">
       <div class="card-header">
