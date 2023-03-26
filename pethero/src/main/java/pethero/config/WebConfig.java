@@ -12,5 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
         registro.addViewController("/").setViewName("index");
         registro.addViewController("/login");
         registro.addViewController("/logout");
+        registro.addViewController("/errores/403").setViewName("/errores/403");
     }
 }

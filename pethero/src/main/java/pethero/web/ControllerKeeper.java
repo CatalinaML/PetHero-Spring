@@ -28,43 +28,9 @@ public class ControllerKeeper {
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping("/newKeeper")
-    public String newKeeper(Keeper keeper){
-        return "keeper/newKeeper";
-    }
-
-    @PostMapping("/saveKeeper")
-    public String saveKeeper(Keeper keeper, HttpSession session){
-        keeper.setType("keeper");
-        keeperService.save(keeper);
-        session.setAttribute("user", keeper);
-        return "keeper/indexKeeper";
-    }
-
     @GetMapping("/services")
-    public String services(HttpSession session, Model model){
-        Keeper keeper = (Keeper) session.getAttribute("user");
-        List<Reservation> reservations = reservationService.findByIdKeeper(keeper.getIdUser());
-
-        List<Reservation> onHold = new ArrayList<>();
-        List<Reservation> accepted = new ArrayList<>();
-        List<Reservation> confirmed = new ArrayList<>();
-        List<Reservation> finished = new ArrayList<>();
-
-        for(Reservation reservation : reservations){
-            if(reservation.getState().equals("Aceptada")){
-                accepted.add(reservation);
-            }else if(reservation.getState().equals("Confirmada")){
-                confirmed.add(reservation);
-            }else{
-                finished.add(reservation);
-            }
-        }
-        model.addAttribute("onHold" , onHold);
+    public String services(Model model){
         return null;
     }
-    @GetMapping("/index")
-    public String index(){
-        return "keeper/indexKeeper";
-    }
+
 }
